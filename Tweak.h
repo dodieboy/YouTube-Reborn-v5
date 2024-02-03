@@ -9,6 +9,7 @@
 #import "Controllers/RootOptionsController.h"
 #import "Controllers/PictureInPictureController.h"
 #import "Controllers/YouTubeDownloadController.h"
+#import "Header/YTIItemSectionSupportedRenderers.h"
 // YT Headers
 #import "YouTubeHeader/ASCollectionView.h"
 #import "YouTubeHeader/ELMCellNode.h"
