@@ -1140,6 +1140,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
         return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
     }];
     [contentsArray removeObjectsAtIndexes:removeIndexes];
+    %orig;
 }
 %end
 %end
