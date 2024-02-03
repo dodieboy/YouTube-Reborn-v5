@@ -1103,7 +1103,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %end
 
 %hook YTIPlayerResponse
-- (BOOL)isMonetized { return kEnableNoVideoAds ? NO : YES; }
+- (BOOL)isMonetized { return NO; }
 %end
 
 %hook YTDataUtils
@@ -1133,15 +1133,13 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 
 %hook YTSectionListViewController
 - (void)loadWithModel:(YTISectionListRenderer *)model {
-    if (kEnableNoVideoAds) {
-        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = model.contentsArray;
-        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
-            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
-            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-            return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
-        }];
-        [contentsArray removeObjectsAtIndexes:removeIndexes];
-    } %orig;
+    NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = model.contentsArray;
+    NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
+        YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
+        YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
+        return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
+    }];
+    [contentsArray removeObjectsAtIndexes:removeIndexes];
 }
 %end
 %end
