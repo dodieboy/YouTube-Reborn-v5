@@ -1123,6 +1123,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %hook YTIElementRenderer
 - (NSData *)elementData {
     if (self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) return nil;
+
     NSArray *adDescriptions = @[@"brand_promo", @"product_carousel.view", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
     NSString *description = [self description];
     if ([adDescriptions containsObject:description]) {
@@ -1150,7 +1151,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
     NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
         YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
         YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-        return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
+        return firstObject.hasCompanionAdRenderer || firstObject.hasAdSlotRenderer;
     }];
     [contentsArray removeObjectsAtIndexes:removeIndexes];
     %orig;
