@@ -1146,12 +1146,12 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %end
 
 %hook YTWatchNextResultsViewController
-- (void)loadWithModel:(YTISectionListRenderer *)_watchNextResults {
+- (void)loadWithModel:(YTWatchNextResultsViewController *)_watchNextResults {
     NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = _watchNextResults.contentsArray;
     NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
         YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
         YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-        return firstObject.hasCompanionAdRenderer || firstObject.hasAdSlotRenderer;
+        return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
     }];
     [contentsArray removeObjectsAtIndexes:removeIndexes];
     %orig;
