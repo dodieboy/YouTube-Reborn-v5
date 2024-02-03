@@ -1124,7 +1124,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 - (NSData *)elementData {
     if (self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) return nil;
 
-    NSArray *adDescriptions = @[@"brand_promo", @"product_carousel.view", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
+    NSArray *adDescriptions = @[@"brand_promo", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
     NSString *description = [self description];
     if ([adDescriptions containsObject:description]) {
         return [NSData data];
@@ -1146,7 +1146,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %end
 
 %hook YTWatchNextResultsViewController
-- (void)loadWithModel:(YTWatchNextResultsViewController *)_watchNextResults {
+- (void)loadWithModel:(YTISectionListRenderer *)_watchNextResults {
     NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = _watchNextResults.contentsArray;
     NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
         YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
