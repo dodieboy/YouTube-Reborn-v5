@@ -1103,9 +1103,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %end
 
 %hook YTIPlayerResponse
-- (BOOL)isMonetized {
-    return NO;
-}
+- (BOOL)isMonetized { return kEnableNoVideoAds ? NO : YES; }
 %end
 
 %hook YTDataUtils
@@ -1125,42 +1123,25 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %hook YTIElementRenderer
 - (NSData *)elementData {
     if (self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) return nil;
-    return %orig;
+    NSArray *adDescriptions = @[@"brand_promo", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
+    NSString *description = [self description];
+    if ([adDescriptions containsObject:description]) {
+        return [NSData data];
+    } return %orig;
 }
 %end
 
-BOOL isAd(id node) {
-    if ([node isKindOfClass:NSClassFromString(@"YTVideoWithContextNode")]
-        && [node respondsToSelector:@selector(parentResponder)]
-        && [[(YTVideoWithContextNode *)node parentResponder] isKindOfClass:NSClassFromString(@"YTAdVideoElementsCellController")])
-        return YES;
-    if ([node isKindOfClass:NSClassFromString(@"ELMCellNode")]) {
-        NSString *description = [[[node controller] owningComponent] description];
-        if ([description containsString:@"brand_promo"]
-            || [description containsString:@"statement_banner"]
-            || [description containsString:@"product_engagement_panel"]
-            || [description containsString:@"product_item"]
-            || [description containsString:@"text_search_ad"]
-            || [description containsString:@"text_image_button_layout"]
-            || [description containsString:@"carousel_headered_layout"]
-            || [description containsString:@"carousel_footered_layout"]
-            || [description containsString:@"square_image_layout"] // install app ad
-            || [description containsString:@"landscape_image_wide_button_layout"]
-            || [description containsString:@"feed_ad_metadata"])
-            return YES;
-    }
-    return NO;
-}
-
-%hook YTAsyncCollectionView
-- (id)collectionView:(id)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    id cell = %orig;
-    if ([cell isKindOfClass:NSClassFromString(@"YTCompactPromotedVideoCell")]
-        || ([cell isKindOfClass:NSClassFromString(@"_ASCollectionViewCell")]
-            && [cell respondsToSelector:@selector(node)]
-            && isAd([cell node])))
-                [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-    return cell;
+%hook YTSectionListViewController
+- (void)loadWithModel:(YTISectionListRenderer *)model {
+    if (kEnableNoVideoAds) {
+        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = model.contentsArray;
+        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
+            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
+            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
+            return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
+        }];
+        [contentsArray removeObjectsAtIndexes:removeIndexes];
+    } %orig;
 }
 %end
 %end
