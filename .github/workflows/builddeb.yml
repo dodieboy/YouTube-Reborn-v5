@@ -9,9 +9,19 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout Repo
+        uses: actions/checkout@main
 
-      - name: Checkout RootHide/theos
+      - name: Cache RootHide/theos
+        id: cache-theos
+        uses: actions/cache@v3
+        with:
+          path: |
+            theos
+          key: ${{ runner.os }}-submodules
+
+      - name: Update RootHide/theos
+        if: steps.cache-theos.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
           repository: RootHide/theos
@@ -19,7 +29,16 @@ jobs:
           submodules: recursive
           path: theos
 
-      - name: Checkout chrisharper22/sdks
+      - name: Cache chrisharper22/sdks
+        id: cache-theos
+        uses: actions/cache@v3
+        with:
+          path: |
+            theos
+          key: ${{ runner.os }}-submodules
+
+      - name: Update chrisharper22/sdks
+        if: steps.cache-sdks.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
           repository: chrisharper22/sdks
@@ -27,7 +46,16 @@ jobs:
           sparse-checkout: iPhoneOS16.2.sdk
           path: theos/sdks
 
+      - name: Cache PoomSmart/YouTubeHeader
+        id: cache-YouTubeHeader
+        uses: actions/cache@v3
+        with:
+          path: |
+            theos
+          key: ${{ runner.os }}-submodules
+
       - name: Checkout PoomSmart/YouTubeHeader
+        if: steps.cache-YouTubeHeader.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
           repository: PoomSmart/YouTubeHeader
