@@ -1176,11 +1176,8 @@ BOOL isAd(id node) {
     id cell = %orig;
     if ([cell isKindOfClass:NSClassFromString(@"_ASCollectionViewCell")]
         && [cell respondsToSelector:@selector(node)]
-        && isAd([cell node])){
-            self.performBatchUpdates({
-                [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            })
-        }
+        && isAd([cell node]))
+            [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
     return cell;
 }
 %end
