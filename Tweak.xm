@@ -1178,7 +1178,7 @@ BOOL isAd(id node) {
         && [cell respondsToSelector:@selector(node)]
         && isAd([cell node]))
             [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            [self.customCollectionView reloadData];
+            [self reloadData];
     return cell;
 }
 %end
