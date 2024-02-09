@@ -9,15 +9,13 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@main
-
-      - name: Checkout RootHide/theos
+      - name: Checkout @main
         uses: actions/checkout@main
-        with:
-          repository: RootHide/theos
-          ref: master
-          submodules: recursive
-          path: theos
+
+      - name: Update git submodules
+        if: steps.cache-test-fixture.outputs.cache-hit != 'true'
+        run:
+          git submodule update --init --recursive
 
       - name: Checkout chrisharper22/sdks
         uses: actions/checkout@main
@@ -26,13 +24,6 @@ jobs:
           ref: main
           sparse-checkout: iPhoneOS16.2.sdk
           path: theos/sdks
-
-      - name: Checkout PoomSmart/YouTubeHeader
-        uses: actions/checkout@main
-        with:
-          repository: PoomSmart/YouTubeHeader
-          ref: main
-          path: YouTubeHeader
 
       - name: Build Package 
         run: |
