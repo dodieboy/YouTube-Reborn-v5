@@ -18,7 +18,7 @@ jobs:
         with:
           path: |
             theos
-          key: ${{ runner.os }}-theos
+          key: ${{ runner.os }}-submodules
 
       - name: Update RootHide/theos
         if: steps.cache-theos.outputs.cache-hit != 'true'
@@ -35,7 +35,7 @@ jobs:
         with:
           path: |
             theos/sdks
-          key: ${{ runner.os }}-sdks
+          key: ${{ runner.os }}-submodules
 
       - name: Update chrisharper22/sdks
         if: steps.cache-sdks.outputs.cache-hit != 'true'
@@ -52,7 +52,7 @@ jobs:
         with:
           path: |
             YouTubeHeader
-          key: ${{ runner.os }}-YouTubeHeader
+          key: ${{ runner.os }}-submodules
 
       - name: Checkout PoomSmart/YouTubeHeader
         if: steps.cache-YouTubeHeader.outputs.cache-hit != 'true'
