@@ -30,11 +30,11 @@ jobs:
           path: theos
 
       - name: Cache chrisharper22/sdks
-        id: cache-theos
+        id: cache-sdks
         uses: actions/cache@v3
         with:
           path: |
-            theos
+            theos/sdks
           key: ${{ runner.os }}-submodules
 
       - name: Update chrisharper22/sdks
@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            theos
+            YouTubeHeader
           key: ${{ runner.os }}-submodules
 
       - name: Checkout PoomSmart/YouTubeHeader
