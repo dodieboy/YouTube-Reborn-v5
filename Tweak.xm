@@ -1112,8 +1112,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 %end
 
 %hook YTAdsInnerTubeContextDecorator
-- (void)decorateContext:(id)context {
-}
+- (void)decorateContext:(id)context {}
 %end
 
 %hook YTAccountScopedAdsInnerTubeContextDecorator
@@ -1124,7 +1123,7 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 - (NSData *)elementData {
     if (self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) return nil;
 
-    NSArray *adDescriptions = @[@"brand_promo", @"product_carousel_item_image_only", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
+    NSArray *adDescriptions = @[@"brand_promo", @"product_carousel_item_image_only", @"shelf_header", @"product_carousel", @"product_engagement_panel", @"product_item", @"text_search_ad", @"text_image_button_layout", @"carousel_headered_layout", @"carousel_footered_layout", @"square_image_layout", @"landscape_image_wide_button_layout", @"feed_ad_metadata"];
     NSString *description = [self description];
     if ([adDescriptions containsObject:description]) {
         return [NSData data];
