@@ -1172,14 +1172,15 @@ BOOL isAd(id node) {
 }
 
 %hook YTAsyncCollectionView
-- (id)collectionView:(id)collectionView performBatchUpdates:^{cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (id)collectionView:(id)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     id cell = %orig;
     if ([cell isKindOfClass:NSClassFromString(@"_ASCollectionViewCell")]
         && [cell respondsToSelector:@selector(node)]
         && isAd([cell node]))
             [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            [self.customCollectionView reloadData];
     return cell;
-}}
+}
 %end
 %end
 
