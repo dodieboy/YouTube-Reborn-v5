@@ -1157,6 +1157,7 @@ BOOL isAd(id node) {
         NSString *description = [[[node controller] owningComponent] description];
         if ([description containsString:@"brand_promo"]
             || [description containsString:@"statement_banner"]
+            || [description containsString:@"product_carousel"]
             || [description containsString:@"product_engagement_panel"]
             || [description containsString:@"product_item"]
             || [description containsString:@"text_search_ad"]
