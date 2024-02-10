@@ -1175,7 +1175,7 @@ BOOL isAd(id node) {
 %hook YTAsyncCollectionView
 
 - (id)collectionView:(id)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ASCollectionViewCell *cell = %orig;
+    _ASCollectionViewCell *cell = %orig;
     if ([cell isKindOfClass:NSClassFromString(@"_ASCollectionViewCell")]
         && [cell respondsToSelector:@selector(node)]
         && isAd([cell node]))
