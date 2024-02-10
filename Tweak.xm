@@ -1126,6 +1126,25 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
 }
 %end
 
+BOOL isAd(YTIElementRenderer *self) {
+    if (self == nil) return NO;
+    NSString *description = [self description];
+    if ([description containsString:@"brand_promo"]
+            || [description containsString:@"statement_banner"]
+            || [description containsString:@"product_carousel"]
+            || [description containsString:@"product_engagement_panel"]
+            || [description containsString:@"product_item"]
+            || [description containsString:@"text_search_ad"]
+            || [description containsString:@"text_image_button_layout"]
+            || [description containsString:@"carousel_headered_layout"]
+            || [description containsString:@"carousel_footered_layout"]
+            || [description containsString:@"square_image_layout"] // install app ad
+            || [description containsString:@"landscape_image_wide_button_layout"]
+            || [description containsString:@"feed_ad_metadata"])
+        return YES;
+    return NO;
+}
+
 %hook YTSectionListViewController
 - (void)loadWithModel:(YTISectionListRenderer *)model {
     NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = model.contentsArray;
@@ -1149,26 +1168,6 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
     }];
     [contentsArray removeObjectsAtIndexes:removeIndexes];
     %orig;
-}
-%end
-
-BOOL isAd(YTIElementRenderer *self) {
-    if (self == nil) return NO;
-    NSString *description = [self description];
-    if ([description containsString:@"brand_promo"]
-            || [description containsString:@"statement_banner"]
-            || [description containsString:@"product_carousel"]
-            || [description containsString:@"product_engagement_panel"]
-            || [description containsString:@"product_item"]
-            || [description containsString:@"text_search_ad"]
-            || [description containsString:@"text_image_button_layout"]
-            || [description containsString:@"carousel_headered_layout"]
-            || [description containsString:@"carousel_footered_layout"]
-            || [description containsString:@"square_image_layout"] // install app ad
-            || [description containsString:@"landscape_image_wide_button_layout"]
-            || [description containsString:@"feed_ad_metadata"])
-        return YES;
-    return NO;
 }
 %end
 %end
