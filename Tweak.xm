@@ -1132,6 +1132,7 @@ BOOL isAd(YTIElementRenderer *self) {
     if ([description containsString:@"brand_promo"]
             || [description containsString:@"statement_banner"]
             || [description containsString:@"product_carousel"]
+            || [description containsString:@"expandable_list"]
             || [description containsString:@"product_engagement_panel"]
             || [description containsString:@"product_item"]
             || [description containsString:@"text_search_ad"]
