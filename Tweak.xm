@@ -1170,6 +1170,8 @@ BOOL isAd(YTIElementRenderer *self) {
         return YES;
     return NO;
 }
+%end
+%end
 
 // Remove “Play next in queue” from the menu by @PoomSmart
 %group gHidePlayNextInQueue
