@@ -1145,17 +1145,17 @@ static UIButton *makeUnderRebornPlayerButton(ELMCellNode *node, NSString *title,
     NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
         YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
         YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-        return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer;
+        return firstObject.hasPromotedVideoRenderer || firstObject.hasCompactPromotedVideoRenderer || firstObject.hasPromotedVideoInlineMutedRenderer || isAd(firstObject.elementRenderer);
     }];
     [contentsArray removeObjectsAtIndexes:removeIndexes];
     %orig;
 }
 %end
 
-BOOL isAd(id node) {
-    if ([node isKindOfClass:NSClassFromString(@"ELMCellNode")]) {
-        NSString *description = [[[node controller] owningComponent] description];
-        if ([description containsString:@"brand_promo"]
+BOOL isAd(YTIElementRenderer *self) {
+    if (self == nil) return NO;
+    NSString *description = [self description];
+    if ([description containsString:@"brand_promo"]
             || [description containsString:@"statement_banner"]
             || [description containsString:@"product_carousel"]
             || [description containsString:@"product_engagement_panel"]
@@ -1167,23 +1167,9 @@ BOOL isAd(id node) {
             || [description containsString:@"square_image_layout"] // install app ad
             || [description containsString:@"landscape_image_wide_button_layout"]
             || [description containsString:@"feed_ad_metadata"])
-            return YES;
-    }
+        return YES;
     return NO;
 }
-
-%hook YTAsyncCollectionView
-
-- (id)collectionView:(id)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    _ASCollectionViewCell *cell = %orig;
-    if ([cell isKindOfClass:NSClassFromString(@"_ASCollectionViewCell")]
-        && [cell respondsToSelector:@selector(node)]
-        && isAd([cell node]))
-            [self deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-    return cell;
-}
-%end
-%end
 
 // Remove “Play next in queue” from the menu by @PoomSmart
 %group gHidePlayNextInQueue
