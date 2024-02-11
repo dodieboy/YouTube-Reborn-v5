@@ -49,17 +49,17 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout Main
-        uses: actions/checkout@v4.1.0
-        with:
-          path: main
-          submodules: recursive
-
       - name: Install Dependencies
-        run: brew install ldid dpkg make
+        run: brew install dpkg jq ldid make node svn xz
 
       - name: Set PATH environment variable
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH 
+      
+      - name: Checkout Main
+        uses: actions/checkout@v4.1.1
+        with:
+          path: main
+          submodules: recursive
       
       - name: SDK Caching
         id: SDK
@@ -81,7 +81,7 @@ jobs:
           path: theos/sdks
 
       - name: Setup Theos Jailed
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.1.1
         with:
           repository: qnblackcat/theos-jailed
           ref: master
@@ -127,7 +127,7 @@ jobs:
           APP_NAME: ${{ inputs.app_name }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.3.0
         env:
           REBORN_VERSION: ${{ inputs.reborn_version }}
           YOUTUBE_VERSION: ${{ inputs.youtube_version }}
