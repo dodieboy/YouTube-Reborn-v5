@@ -95,7 +95,7 @@ jobs:
       - name: Prepare YouTube iPA
         run: |
           curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
-          wget "$YOUTUBE_URL" -O main/YouTube.ipa
+          curl "$YOUTUBE_URL" --output main/YouTube.ipa
           unzip -q main/YouTube.ipa -d main/tmp
           rm -rf main/tmp/Payload/YouTube.app/PlugIns/*
 
