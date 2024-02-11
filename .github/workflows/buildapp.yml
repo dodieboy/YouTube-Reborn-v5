@@ -94,6 +94,7 @@ jobs:
 
       - name: Prepare YouTube iPA
         run: |
+          echo "$YOUTUBE_URL"
           wget "$YOUTUBE_URL" --no-verbose -O main/YouTube.ipa && echo -e "==> \033[1mYouTube v${{ inputs.youtube_version }} downloaded! \033[0m"
           unzip -q main/YouTube.ipa -d main/tmp
           rm -rf main/tmp/Payload/YouTube.app/PlugIns/*
