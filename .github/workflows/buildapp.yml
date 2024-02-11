@@ -57,6 +57,9 @@ jobs:
 
       - name: Install Dependencies
         run: brew install ldid dpkg make
+
+      - name: Set PATH environment variable
+        run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH 
       
       - name: SDK Caching
         id: SDK
