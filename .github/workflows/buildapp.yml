@@ -76,7 +76,7 @@ jobs:
           path: theos/sdks
 
       - name: Install Dependencies
-        run: brew install ldid dpkg wget
+        run: brew install ldid dpkg
 
       - name: Setup Theos Jailed
         uses: actions/checkout@main
@@ -95,8 +95,7 @@ jobs:
       - name: Prepare YouTube iPA
         run: |
           curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
-          echo "$YOUTUBE_URL"
-          curl "$YOUTUBE_URL" --output main/YouTube.ipa
+          wget "$YOUTUBE_URL" --no-verbose -O main/YouTube.ipa
           unzip -q main/YouTube.ipa -d main/tmp
           rm -rf main/tmp/Payload/YouTube.app/PlugIns/*
 
