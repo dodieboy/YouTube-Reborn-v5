@@ -49,12 +49,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Install Dependencies
-        run: brew install dpkg jq ldid make node svn xz
-
-      - name: Set PATH environment variable
-        run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH 
-      
       - name: Checkout @main
         uses: actions/checkout@main
 
@@ -81,8 +75,11 @@ jobs:
           sparse-checkout: iPhoneOS16.2.sdk
           path: theos/sdks
 
+      - name: Install Dependencies
+        run: brew install ldid dpkg
+
       - name: Setup Theos Jailed
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@main
         with:
           repository: qnblackcat/theos-jailed
           ref: master
