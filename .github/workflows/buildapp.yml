@@ -51,8 +51,6 @@ jobs:
     steps:
       - name: Checkout @main
         uses: actions/checkout@main
-        with:
-          path: main
 
       - name: Update git submodules
         run:
@@ -96,10 +94,10 @@ jobs:
 
       - name: Prepare YouTube iPA
         run: |
-          wget "$YOUTUBE_URL" --no-verbose -O ${{ github.workspace }}/main/YouTube.ipa && echo -e "==> \033[1mYouTube v${{ inputs.youtube_version }} downloaded! \033[0m"
+          wget "$YOUTUBE_URL" --no-verbose -O ${{ github.workspace }}/YouTube.ipa && echo -e "==> \033[1mYouTube v${{ inputs.youtube_version }} downloaded! \033[0m"
           echo "$YOUTUBE_URL"
-          unzip -q ${{ github.workspace }}/main/YouTube.ipa -d ${{ github.workspace }}/main/tmp
-          rm -rf ${{ github.workspace }}/main/tmp/Payload/YouTube.app/PlugIns/*
+          unzip -q ${{ github.workspace }}/YouTube.ipa -d ${{ github.workspace }}/tmp
+          rm -rf ${{ github.workspace }}/tmp/Payload/YouTube.app/PlugIns/*
           curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
 
         env:
@@ -111,7 +109,7 @@ jobs:
         id: build_package
         run: |
           (echo 'THEOS_IGNORE_PARALLEL_BUILDING_NOTICE = yes' >> ~/.theosrc)
-          cd ${{ github.workspace }}/main
+          cd ${{ github.workspace }}
           sed -i '' "12s#.*#BUNDLE_ID = ${{ env.BUNDLE_ID }}#g" Makefile
           sed -i '' "11s#.*#DISPLAY_NAME = ${{ env.APP_NAME }}#g" Makefile          
           make package FINALPACKAGE=1
@@ -134,7 +132,7 @@ jobs:
           YOUTUBE_VERSION: ${{ inputs.youtube_version }}
         with:
           name: YouTube Reborn_${{ env.YOUTUBE_VERSION }}_${{ env.REBORN_VERSION }}
-          path: ${{ github.workspace }}/main/packages/${{ steps.build_package.outputs.package }}
+          path: ${{ github.workspace }}/packages/${{ steps.build_package.outputs.package }}
           if-no-files-found: error
 
       - name: Create Release
@@ -148,5 +146,5 @@ jobs:
         with:
           tag_name: v${{ env.YOUTUBE_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
           name: v${{ env.YOUTUBE_VERSION }}-${{ env.REBORN_VERSION }}-(${{ github.run_number }})
-          files: main/packages/*.ipa
+          files: ${{ github.workspace }}/packages/*.ipa
           draft: ${{ env.DRAFT }}
