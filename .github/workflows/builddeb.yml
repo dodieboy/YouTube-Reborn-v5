@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout @main
-        uses: actions/checkout@main
+      - name: Checkout @v4
+        uses: actions/checkout@v4
 
       - name: Update git submodules
         if: steps.cache-test-fixture.outputs.cache-hit != 'true'
@@ -18,7 +18,7 @@ jobs:
           git submodule update --init --recursive
 
       - name: Checkout chrisharper22/sdks
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
         with:
           repository: chrisharper22/sdks
           ref: main
