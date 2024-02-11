@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@main
 
       - name: Update git submodules
-        if: steps.cache-test-fixture.outputs.cache-hit != 'true'
         run:
           git submodule update --init --recursive
 
