@@ -56,7 +56,7 @@ jobs:
           submodules: recursive
 
       - name: Install Dependencies
-        run: brew install ldid dpkg
+        run: brew install ldid dpkg make
       
       - name: SDK Caching
         id: SDK
