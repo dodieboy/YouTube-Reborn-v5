@@ -51,6 +51,8 @@ jobs:
     steps:
       - name: Checkout @main
         uses: actions/checkout@main
+        with:
+          path: main
 
       - name: Update git submodules
         run:
