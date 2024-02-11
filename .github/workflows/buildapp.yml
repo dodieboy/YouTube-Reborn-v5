@@ -94,10 +94,10 @@ jobs:
 
       - name: Prepare YouTube iPA
         run: |
+          curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
           wget "$YOUTUBE_URL" --no-verbose -O ${{ github.workspace }}/YouTube.ipa
           unzip -q ${{ github.workspace }}/YouTube.ipa -d ${{ github.workspace }}/tmp
           rm -rf ${{ github.workspace }}/tmp/Payload/YouTube.app/PlugIns/*
-          curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
 
         env:
           THEOS: ${{ github.workspace }}/theos
