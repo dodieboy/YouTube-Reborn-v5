@@ -94,8 +94,7 @@ jobs:
 
       - name: Prepare YouTube iPA
         run: |
-          wget "$YOUTUBE_URL" --no-verbose -O ${{ github.workspace }}/YouTube.ipa && echo -e "==> \033[1mYouTube v${{ inputs.youtube_version }} downloaded! \033[0m"
-          echo "$YOUTUBE_URL"
+          wget "$YOUTUBE_URL" --no-verbose -O ${{ github.workspace }}/YouTube.ipa
           unzip -q ${{ github.workspace }}/YouTube.ipa -d ${{ github.workspace }}/tmp
           rm -rf ${{ github.workspace }}/tmp/Payload/YouTube.app/PlugIns/*
           curl "https://raw.githubusercontent.com/Muirey03/RemoteLog/master/RemoteLog.h" --output "$THEOS/include/RemoteLog.h"
