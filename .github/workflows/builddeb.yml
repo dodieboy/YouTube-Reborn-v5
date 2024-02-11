@@ -28,6 +28,7 @@ jobs:
           restore-keys: ${{ env.cache-name }}
 
       - name: Checkout chrisharper22/sdks
+        if: steps.SDK.outputs.cache-hit != 'true'
         uses: actions/checkout@main
         with:
           repository: chrisharper22/sdks
