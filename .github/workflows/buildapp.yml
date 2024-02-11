@@ -55,11 +55,12 @@ jobs:
       - name: Set PATH environment variable
         run: echo "$(brew --prefix make)/libexec/gnubin" >> $GITHUB_PATH 
       
-      - name: Checkout Main
-        uses: actions/checkout@v4.1.1
-        with:
-          path: main
-          submodules: recursive
+      - name: Checkout @main
+        uses: actions/checkout@main
+
+      - name: Update git submodules
+        run:
+          git submodule update --init --recursive
       
       - name: SDK Caching
         id: SDK
