@@ -14,7 +14,7 @@ jobs:
 
       - name: Update git submodules
         run:
-          git submodule update --rebase --recursive
+          git submodule update --init --recursive
 
       - name: SDK Caching
         id: SDK
