@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout @main
         uses: actions/checkout@main
+        with:
+          submodules: recursive
 
       - name: Update git submodules
         run:
