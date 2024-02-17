@@ -2,12 +2,12 @@
 #import "Localization.h"
 #import "../FFmpeg-kit/FFmpegKitConfig.h"
 #import "../FFmpeg-kit/FFmpegKit.h"
-#import "../FFmpeg-kit/libavcodec/avcodec.h"
-#import "../FFmpeg-kit/libavdevice/avdevice.h"
-#import "../FFmpeg-kit/libavfilter/avfilter.h"
-#import "../FFmpeg-kit/libavutil/avutil.h"
-#import "../FFmpeg-kit/libswresample/swresample.h"
-#import "../FFmpeg-kit/libswscale/swscale.h"
+#import "../libavcodec/avcodec.h"
+#import "../libavdevice/avdevice.h"
+#import "../libavfilter/avfilter.h"
+#import "../libavutil/avutil.h"
+#import "../libswresample/swresample.h"
+#import "../libswscale/swscale.h"
 #import "../AFNetworking/AFNetworking.h"
 
 @interface YouTubeDownloadController () {
