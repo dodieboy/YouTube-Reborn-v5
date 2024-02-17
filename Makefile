@@ -16,7 +16,9 @@ YouTubeReborn_FILES = Tweak.xm $(shell find Controllers -name '*.m') $(shell fin
 YouTubeReborn_IPA = ./tmp/Payload/YouTube.app
 YouTubeReborn_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 YouTubeReborn_FRAMEWORKS = UIKit Security Foundation AVFoundation AVKit Photos Accelerate CoreMotion GameController VideoToolbox
-YouTubeReborn_OBJ_FILES = $(shell find lib -name '*.a')
+YouTubeReborn_EXTRA_FRAMEWORKS = ffmpegkit libavcodec libavdevice libavfilter libavformat libavutil libswresample libswscale
+YouTubeReborn_CFLAGS = -FFrameworks -fobjc-arc -Wno-deprecated-declarations
+YouTubeReborn_LDFLAGS += -FFrameworks -rpath @loader_path/Frameworks/
 YouTubeReborn_LIBRARIES = bz2 c++ iconv z
 
 include $(THEOS)/makefiles/common.mk
