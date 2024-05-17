@@ -14,6 +14,7 @@
 #import "YouTubeHeader/YTIElementRenderer.h"
 #import "YouTubeHeader/YTISectionListRenderer.h"
 #import "YouTubeHeader/YTWatchNextResultsViewController.h"
+#import "YouTubeHeader/YTReelModel.h"
 #import "YouTubeHeader/ELMCellNode.h"
 #import "YouTubeHeader/ELMNodeController.h"
 #import "YouTubeHeader/YTIMenuConditionalServiceItemRenderer.h"
