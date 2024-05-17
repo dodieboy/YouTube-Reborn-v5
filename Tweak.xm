@@ -818,11 +818,14 @@ BOOL isAdString(NSString *description) {
         || [description containsString:@"home_video_with_context"]
         || [description containsString:@"landscape_image_wide_button_layout"]
         || [description containsString:@"product_engagement_panel"]
+        || [description containsString:@"product_carousel"]
         || [description containsString:@"product_item"]
         || [description containsString:@"shelf_header"]
         || [description containsString:@"square_image_layout"]
         || [description containsString:@"text_image_button_layout"]
         || [description containsString:@"text_search_ad"]
+        || [description containsString:@"expandable_list"]
+        || [description containsString:@"expandable_metadata"]
         || [description containsString:@"video_display_full_buttoned_layout"])
         return YES;
     return NO;
@@ -836,7 +839,6 @@ NSData *cellDividerData;
         return cellDividerData;
     }
     if ([self respondsToSelector:@selector(hasCompatibilityOptions)] && self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) return cellDividerData;
-    // if (isAdString(description)) return cellDividerData;
     return %orig;
 }
 %end
@@ -855,6 +857,24 @@ NSData *cellDividerData;
                 || [description containsString:@"post_shelf"]
                 || [description containsString:@"product_carousel"]
                 || [description containsString:@"statement_banner"];
+        }];
+        [contentsArray removeObjectsAtIndexes:removeIndexes];
+    }
+    %orig;
+}
+%end
+%hook YTWatchNextResultsViewController
+- (void)loadWithModel:(YTISectionListRenderer *)watchNextResults {
+    if ([watchNextResults isKindOfClass:%c(YTISectionListRenderer)]) {
+        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = watchNextResults.contentsArray;
+        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
+            if (![renderers isKindOfClass:%c(YTISectionListSupportedRenderers)])
+                return NO;
+            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
+            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
+            YTIElementRenderer *elementRenderer = firstObject.elementRenderer;
+            NSString *description = [elementRenderer description];
+            return isAdString(description);
         }];
         [contentsArray removeObjectsAtIndexes:removeIndexes];
     }
