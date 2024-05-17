@@ -7,7 +7,7 @@ on:
     
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - uses: actions/checkout@main
 
@@ -42,6 +42,6 @@ jobs:
           gmake clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: packages/*.deb
