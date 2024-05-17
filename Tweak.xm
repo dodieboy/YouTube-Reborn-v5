@@ -818,7 +818,6 @@ BOOL isAdString(NSString *description) {
         || [description containsString:@"home_video_with_context"]
         || [description containsString:@"landscape_image_wide_button_layout"]
         || [description containsString:@"product_engagement_panel"]
-        || [description containsString:@"product_carousel"]
         || [description containsString:@"product_item"]
         || [description containsString:@"shelf_header"]
         || [description containsString:@"square_image_layout"]
