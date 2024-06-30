@@ -973,7 +973,7 @@ static uint8_t cellDividerDataBytes[] = {
 
 %ctor {
     cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
-    %init;
+    %init(gNoVideoAds);
 }
 %end
 
