@@ -976,7 +976,6 @@ static uint8_t cellDividerDataBytes[] = {
     %init;
 }
 %end
-%end
 
 // Remove “Play next in queue” from the menu by @PoomSmart
 %group gHidePlayNextInQueue
