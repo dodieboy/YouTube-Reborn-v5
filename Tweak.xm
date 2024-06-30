@@ -814,6 +814,9 @@ static NSString *accessGroupID() {
     %orig;
 }
 %end
+%ctor {
+    cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
+}
 BOOL isAdString(NSString *description) {
     if ([description containsString:@"brand_promo"]
         || [description containsString:@"carousel_footered_layout"]
@@ -971,10 +974,7 @@ static uint8_t cellDividerDataBytes[] = {
 
 %end
 %end
-%ctor {
-    cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
-    %init(gNoVideoAds);
-}
+
 
 
 // Remove “Play next in queue” from the menu by @PoomSmart
