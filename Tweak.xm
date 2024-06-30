@@ -814,9 +814,6 @@ static NSString *accessGroupID() {
     %orig;
 }
 %end
-%ctor {
-    cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
-}
 BOOL isAdString(NSString *description) {
     if ([description containsString:@"brand_promo"]
         || [description containsString:@"carousel_footered_layout"]
@@ -955,6 +952,10 @@ static uint8_t cellDividerDataBytes[] = {
     0x31, 0x37, 0x31, 0x39, 0x31, 0x32, 0x32, 0x35, 0x34, 0x39,
     0x39, 0x39, 0x36, 0x30, 0x31, 0x37, 0x31, 0x33, 0x38,
 };
+
+%ctor {
+    cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
+}
 
 %hook YTIElementRenderer
 
