@@ -970,12 +970,12 @@ static uint8_t cellDividerDataBytes[] = {
 }
 
 %end
-
+%end
 %ctor {
     cellDividerData = [NSData dataWithBytes:cellDividerDataBytes length:cellDividerDataBytesLength];
     %init(gNoVideoAds);
 }
-%end
+
 
 // Remove “Play next in queue” from the menu by @PoomSmart
 %group gHidePlayNextInQueue
