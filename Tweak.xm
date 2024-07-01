@@ -830,28 +830,6 @@ static NSString *accessGroupID() {
     %orig;
 }
 %end
-BOOL isAdString(NSString *description) {
-    if ([description containsString:@"brand_promo"]
-        || [description containsString:@"carousel_footered_layout"]
-        || [description containsString:@"carousel_headered_layout"]
-        || [description containsString:@"feed_ad_metadata"]
-        || [description containsString:@"full_width_portrait_image_layout"]
-        || [description containsString:@"full_width_square_image_layout"]
-        || [description containsString:@"home_video_with_context"]
-        || [description containsString:@"landscape_image_wide_button_layout"]
-        || [description containsString:@"product_engagement_panel"]
-        || [description containsString:@"product_item"]
-        || [description containsString:@"shelf_header"]
-        || [description containsString:@"square_image_layout"]
-        || [description containsString:@"text_image_button_layout"]
-        || [description containsString:@"text_search_ad"]
-        || [description containsString:@"expandable_list"]
-        || [description containsString:@"expandable_metadata"]
-        || [description containsString:@"video_display_full_layout"]
-        || [description containsString:@"video_display_full_buttoned_layout"])
-        return YES;
-    return NO;
-}
 NSString *getAdString(NSString *description) {
     if ([description containsString:@"brand_promo"])
         return @"brand_promo";
