@@ -837,6 +837,8 @@ NSString *getAdString(NSString *description) {
         return @"carousel_footered_layout";
     if ([description containsString:@"carousel_headered_layout"])
         return @"carousel_headered_layout";
+    if ([description containsString:@"products_in_video_with_preview_overlay"])
+        return @"products_in_video_with_preview_overlay";
     if ([description containsString:@"products_in_video_with_preview_overlay_banner"])
         return @"products_in_video_with_preview_overlay_banner";
     if ([description containsString:@"products_in_video_with_preview_overlay_badge"])
@@ -918,6 +920,29 @@ static __strong NSData *cellDividerData;
             NSString *description = [elementRenderer description];
             NSString *adString = getAdString(description);
             if (adString) {
+                // HBLogInfo(@"YTX getAdString 2 %@ %@", adString, elementRenderer);
+                return YES;
+            }
+            return NO;
+        }];
+        [contentsArray removeObjectsAtIndexes:removeIndexes];
+    }
+    %orig;
+}
+%end
+%hook YTWatchNextResultsViewController
+- (void)loadWithModel:(YTISectionListRenderer *)watchNextResults {
+    if ([watchNextResults isKindOfClass:%c(YTISectionListRenderer)]) {
+        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = watchNextResults.contentsArray;
+        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
+            if (![renderers isKindOfClass:%c(YTISectionListSupportedRenderers)])
+                return NO;
+            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
+            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
+            YTIElementRenderer *elementRenderer = firstObject.elementRenderer;
+            NSString *description = [elementRenderer description];
+            NSString *adString = getAdString(description);
+            if (adString || [description containsString:@"expandable_list"]) {
                 // HBLogInfo(@"YTX getAdString 2 %@ %@", adString, elementRenderer);
                 return YES;
             }
