@@ -843,10 +843,10 @@ NSString *getAdString(NSString *description) {
         return @"products_in_video_with_preview_overlay_banner";
     if ([description containsString:@"products_in_video_with_preview_overlay_badge"])
         return @"products_in_video_with_preview_overlay_badge";
-    // if ([description containsString:@"content_forward_pill_overlay_badge"])
-    //     return @"content_forward_pill_overlay_badge";
-    // if ([description containsString:@"featured_product_content_overlay_badge"])
-    //     return @"featured_product_content_overlay_badge";
+    if ([description containsString:@"content_forward_pill_overlay_badge"])
+        return @"content_forward_pill_overlay_badge";
+    if ([description containsString:@"featured_product_content_overlay_badge"])
+        return @"featured_product_content_overlay_badge";
     // if ([description containsString:@"expandable_list"])
     //      return @"expandable_list";
     // if ([description containsString:@"expandable_metadata"])
@@ -920,29 +920,6 @@ static __strong NSData *cellDividerData;
             NSString *description = [elementRenderer description];
             NSString *adString = getAdString(description);
             if (adString) {
-                // HBLogInfo(@"YTX getAdString 2 %@ %@", adString, elementRenderer);
-                return YES;
-            }
-            return NO;
-        }];
-        [contentsArray removeObjectsAtIndexes:removeIndexes];
-    }
-    %orig;
-}
-%end
-%hook YTWatchNextResultsViewController
-- (void)loadWithModel:(YTISectionListRenderer *)watchNextResults {
-    if ([watchNextResults isKindOfClass:%c(YTISectionListRenderer)]) {
-        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = watchNextResults.contentsArray;
-        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
-            if (![renderers isKindOfClass:%c(YTISectionListSupportedRenderers)])
-                return NO;
-            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
-            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-            YTIElementRenderer *elementRenderer = firstObject.elementRenderer;
-            NSString *description = [elementRenderer description];
-            NSString *adString = getAdString(description);
-            if (adString || [description containsString:@"expandable_list"]) {
                 // HBLogInfo(@"YTX getAdString 2 %@ %@", adString, elementRenderer);
                 return YES;
             }
