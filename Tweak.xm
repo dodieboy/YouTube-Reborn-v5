@@ -837,10 +837,10 @@ NSString *getAdString(NSString *description) {
         return @"carousel_footered_layout";
     if ([description containsString:@"carousel_headered_layout"])
         return @"carousel_headered_layout";
-    if ([description containsString:@"expandable_list"])
-        return @"expandable_list";
-    if ([description containsString:@"expandable_metadata"])
-        return @"expandable_metadata";
+    // if ([description containsString:@"expandable_list"])
+    //     return @"expandable_list";
+    // if ([description containsString:@"expandable_metadata"])
+    //     return @"expandable_metadata";
     if ([description containsString:@"feed_ad_metadata"])
         return @"feed_ad_metadata";
     if ([description containsString:@"full_width_portrait_image_layout"])
