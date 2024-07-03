@@ -845,8 +845,8 @@ NSString *getAdString(NSString *description) {
     //     return @"content_forward_pill_overlay_badge";
     // if ([description containsString:@"featured_product_content_overlay_badge"])
     //     return @"featured_product_content_overlay_badge";
-    if ([description containsString:@"expandable_list"])
-         return @"expandable_list";
+    // if ([description containsString:@"expandable_list"])
+    //      return @"expandable_list";
     // if ([description containsString:@"expandable_metadata"])
     //     return @"expandable_metadata";
     if ([description containsString:@"feed_ad_metadata"])
