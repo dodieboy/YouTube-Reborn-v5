@@ -837,8 +837,16 @@ NSString *getAdString(NSString *description) {
         return @"carousel_footered_layout";
     if ([description containsString:@"carousel_headered_layout"])
         return @"carousel_headered_layout";
-    // if ([description containsString:@"expandable_list"])
-    //     return @"expandable_list";
+    if ([description containsString:@"products_in_video_with_preview_overlay_banner"])
+        return @"products_in_video_with_preview_overlay_banner";
+    if ([description containsString:@"products_in_video_with_preview_overlay_badge"])
+        return @"products_in_video_with_preview_overlay_badge";
+    // if ([description containsString:@"content_forward_pill_overlay_badge"])
+    //     return @"content_forward_pill_overlay_badge";
+    // if ([description containsString:@"featured_product_content_overlay_badge"])
+    //     return @"featured_product_content_overlay_badge";
+    if ([description containsString:@"expandable_list"])
+         return @"expandable_list";
     // if ([description containsString:@"expandable_metadata"])
     //     return @"expandable_metadata";
     if ([description containsString:@"feed_ad_metadata"])
