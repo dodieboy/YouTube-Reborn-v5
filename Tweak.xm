@@ -807,10 +807,8 @@ static NSString *accessGroupID() {
 - (BOOL)isMonetized { return NO; }
 %end
 %hook YTAdShieldUtils
-
 + (id)spamSignalsDictionary { return @{}; }
 + (id)spamSignalsDictionaryWithoutIDFA { return @{}; }
-
 %end
 %hook YTDataUtils
 + (id)spamSignalsDictionary { return @{}; }
@@ -822,6 +820,12 @@ static NSString *accessGroupID() {
 %hook YTAccountScopedAdsInnerTubeContextDecorator
 - (void)decorateContext:(id)context { %orig(nil); }
 %end
+%hook YTLocalPlaybackController
+- (id)createAdsPlaybackCoordinator { return nil; }
+%end
+%hook MDXSession
+- (void)adPlaying:(id)ad {}
+%end
 %hook YTReelInfinitePlaybackDataSource
 - (void)setReels:(NSMutableOrderedSet <YTReelModel *> *)reels {
     [reels removeObjectsAtIndexes:[reels indexesOfObjectsPassingTest:^BOOL(YTReelModel *obj, NSUInteger idx, BOOL *stop) {
@@ -830,6 +834,7 @@ static NSString *accessGroupID() {
     %orig;
 }
 %end
+
 NSString *getAdString(NSString *description) {
     if ([description containsString:@"brand_promo"])
         return @"brand_promo";
@@ -853,6 +858,8 @@ NSString *getAdString(NSString *description) {
         return @"product_engagement_panel";
     if ([description containsString:@"product_item"])
         return @"product_item";
+    if ([description containsString:@"shopping_carousel"])
+        return @"shopping_carousel";
     if ([description containsString:@"statement_banner"])
         return @"statement_banner";
     if ([description containsString:@"square_image_layout"])
@@ -867,53 +874,50 @@ NSString *getAdString(NSString *description) {
         return @"video_display_full_buttoned_layout";
     return nil;
 }
-static __strong NSData *cellDividerData;
-%hook YTIElementRenderer
-- (NSData *)elementData {
-    NSString *description = [self description];
-    if ([description containsString:@"cell_divider"]) {
-        if (!cellDividerData) cellDividerData = %orig;
-        return cellDividerData;
+
+static BOOL isAdRenderer(YTIElementRenderer *elementRenderer, int kind) {
+    if ([elementRenderer respondsToSelector:@selector(hasCompatibilityOptions)] && elementRenderer.hasCompatibilityOptions && elementRenderer.compatibilityOptions.hasAdLoggingData) {
+        HBLogDebug(@"YTX adLogging %d %@", kind, elementRenderer);
+        return YES;
     }
-    if (!cellDividerData) return %orig;
-    if ([self respondsToSelector:@selector(hasCompatibilityOptions)] && self.hasCompatibilityOptions && self.compatibilityOptions.hasAdLoggingData) {
-        // HBLogInfo(@"YTX adLogging 1 %@", cellDividerData);
-        return cellDividerData;
-    }
+    NSString *description = [elementRenderer description];
     NSString *adString = getAdString(description);
     if (adString) {
-        // HBLogInfo(@"YTX getAdString 1 %@ %@", adString, cellDividerData);
-        return cellDividerData;
+        HBLogDebug(@"YTX getAdString %d %@ %@", kind, adString, elementRenderer);
+        return YES;
     }
-    return %orig;
+    return NO;
 }
-%end
+
+static NSMutableArray <YTIItemSectionRenderer *> *filteredArray(NSArray <YTIItemSectionRenderer *> *array) {
+    NSMutableArray <YTIItemSectionRenderer *> *newArray = [array mutableCopy];
+    NSIndexSet *removeIndexes = [newArray indexesOfObjectsPassingTest:^BOOL(YTIItemSectionRenderer *sectionRenderer, NSUInteger idx, BOOL *stop) {
+        if (![sectionRenderer isKindOfClass:%c(YTIItemSectionRenderer)])
+            return NO;
+        NSMutableArray <YTIItemSectionSupportedRenderers *> *contentsArray = sectionRenderer.contentsArray;
+        if (contentsArray.count > 1) {
+            NSIndexSet *removeContentsArrayIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTIItemSectionSupportedRenderers *sectionSupportedRenderers, NSUInteger idx2, BOOL *stop2) {
+                YTIElementRenderer *elementRenderer = sectionSupportedRenderers.elementRenderer;
+                return isAdRenderer(elementRenderer, 3);
+            }];
+            [contentsArray removeObjectsAtIndexes:removeContentsArrayIndexes];
+        }
+        YTIItemSectionSupportedRenderers *firstObject = [contentsArray firstObject];
+        YTIElementRenderer *elementRenderer = firstObject.elementRenderer;
+        return isAdRenderer(elementRenderer, 2);
+    }];
+    [newArray removeObjectsAtIndexes:removeIndexes];
+    return newArray;
+}
 
 %hook YTInnerTubeCollectionViewController
-- (void)loadWithModel:(YTISectionListRenderer *)model {
-    if ([model isKindOfClass:%c(YTISectionListRenderer)]) {
-        NSMutableArray <YTISectionListSupportedRenderers *> *contentsArray = model.contentsArray;
-        NSIndexSet *removeIndexes = [contentsArray indexesOfObjectsPassingTest:^BOOL(YTISectionListSupportedRenderers *renderers, NSUInteger idx, BOOL *stop) {
-            if (![renderers isKindOfClass:%c(YTISectionListSupportedRenderers)])
-                return NO;
-            YTIItemSectionRenderer *sectionRenderer = renderers.itemSectionRenderer;
-            YTIItemSectionSupportedRenderers *firstObject = [sectionRenderer.contentsArray firstObject];
-            YTIElementRenderer *elementRenderer = firstObject.elementRenderer;
-            if ([elementRenderer respondsToSelector:@selector(hasCompatibilityOptions)] && elementRenderer.hasCompatibilityOptions && elementRenderer.compatibilityOptions.hasAdLoggingData) {
-                // HBLogInfo(@"YTX adLogging 2 %@", elementRenderer);
-                return YES;
-            }
-            NSString *description = [elementRenderer description];
-            NSString *adString = getAdString(description);
-            if (adString) {
-                // HBLogInfo(@"YTX getAdString 2 %@ %@", adString, elementRenderer);
-                return YES;
-            }
-            return NO;
-        }];
-        [contentsArray removeObjectsAtIndexes:removeIndexes];
-    }
+- (void)displaySectionsWithReloadingSectionControllerByRenderer:(id)renderer {
+    NSMutableArray *sectionRenderers = [self valueForKey:@"_sectionRenderers"];
+    [self setValue:filteredArray(sectionRenderers) forKey:@"_sectionRenderers"];
     %orig;
+}
+- (void)addSectionsFromArray:(NSArray <YTIItemSectionRenderer *> *)array {
+    %orig(filteredArray(array));
 }
 %end
 %end
