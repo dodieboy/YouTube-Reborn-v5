@@ -1,12 +1,14 @@
 ## YouTube Reborn: Best Customizer for iOS YouTube App
 
+This is a build-on project from LillieH1000 and arichorn tweak. Because arichorn account got close down, I forked it and updating the adblock feature of this tweak.
+
 Revitalize your YouTube experience with YouTube Reborn—a tweak developed by LillieH1000. Compatible with non-jailbroken and jailbroken iOS and iPadOS devices, this tweak works seamlessly on iOS/iPadOS 15.0-17.5.1 while supporting the latest version of YouTube.
 
 -----
 
 ### Download YouTube Reborn
 
-Get ready to have a better YouTube experience! Download the Deb file from the [latest release](https://github.com/arichorn/YouTube-Reborn/releases/latest/) on GitHub.
+Get ready to have a better YouTube experience! Download the Deb file from the [latest release](https://github.com/dodieboy/YouTube-Reborn-v5/releases/) on GitHub.
 
 -----
 
