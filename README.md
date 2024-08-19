@@ -8,7 +8,7 @@ Revitalize your YouTube experience with YouTube Reborn—a tweak developed by Li
 
 ### Download YouTube Reborn
 
-Get ready to have a better YouTube experience! Download the Deb file from the [latest release](https://github.com/dodieboy/YouTube-Reborn-v5/releases/) on GitHub.
+Get ready to have a better YouTube experience! Please fork and use the action tab to build the deb file.
 
 -----
 
